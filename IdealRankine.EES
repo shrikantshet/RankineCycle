@@ -1,0 +1,53 @@
+"Here's a source code for Rankine cycle"
+"We'll solve a simple Rankine cycle problem with condenser temperature 300 K, saturated water being isentropically pumped to 50bar, 850 K and expanded isentropically in a turbine. Water is used as a working fluid. Let us calculate work output by turbine, pump work required, efficiency, heat supplied in superheater, total heat supplied, heat rejected in condenser. "
+
+
+
+$UnitSystem SI Pa K J Mass    {Declaring unit system that we'll be using}
+$TabStops 2 cm
+{INPUTS}
+f$ = 'Water'    {Water as working fluid}
+
+T[1]=300 [K]
+x[1]=0
+h[1]=enthalpy(f$, T=T[1], x=x[1])
+s[1]=entropy(f$, T=T[1], x=x[1])
+P[1]=pressure(f$, T=T[1], x=x[1])
+
+P[2]=5000000 [Pa]
+s[2]=s[1]
+h[2]=enthalpy(f$, P=P[2], s=s[2])
+T[2]=temperature(f$, P=P[2], s=s[2])
+
+P[3]=P[2]
+x[3]=0
+T[3]=temperature(f$, x=x[3], P=P[3])
+h[3]=enthalpy(f$, x=x[3], T=T[3])
+s[3]=entropy(f$, x=x[3], T=T[3])
+
+P[4]=P[3]
+T[4]=T[3]
+x[4]=1
+h[4]=enthalpy(f$, x=x[4], T=T[4])
+s[4]=entropy(f$, T=T[4], x=x[4])
+
+T[5]=850 [K]
+P[5]=P[4]
+h[5]=enthalpy(f$, P=P[5], T=T[5])
+s[5]=entropy(f$, T=T[5], P=P[5])
+
+s[5]=s[6]
+P[6]=P[1]
+h[6]=enthalpy(f$, P=P[6], s=s[6])
+T[6]=temperature(f$, P=P[6], s=s[6])
+
+W_out=h[5]-h[6]
+W_in=h[2]-h[1]
+W_net=W_out-W_in
+Q_in=h[5]-h[2]
+eta=W_net/Q_in
+
+Q_superheater=h[5]-h[4]
+Q_rejected=h[6]-h[1]
+W_pump=W_in
+W_turbine=W_out
